@@ -1,12 +1,21 @@
 import mongoose from "mongoose";
 
-const url = "mongodb+srv://Alastor:crRJpX6iUOVxk122@cluster0.qqupiwk.mongodb.net/Sample";
-const db = mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+const DBConnection = async()=>{
+    try{
+        await mongoose.connect(process.env.DB_CONN,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        });
+        console.log('DB ONLINE')
 
-})
-    .then(db => { console.log("Connection to", db.connection.name, "established"); })
-    .catch(error => console.log(error))
+    }
+    catch(error){
+        console.log(error);
+        throw new Error('Error a la hora de inicializzar DB')
+    }
+}
 
-export default db;
+module.exports = {
+    DBConnection
+}
